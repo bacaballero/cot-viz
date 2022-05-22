@@ -37,8 +37,6 @@ function App() {
     setCommodity(event.target.value) 
   }
 
-  console.log(commodity)
-
   return (
     <div>
       <label>
