@@ -33,27 +33,23 @@ function App() {
   useEffect(() => {
     setSelectedCommodityData(data.data.filter(future => future.name === commodity))
   }, [commodity])
-
-  const handleChange = (event) => {
-    setCommodity(event.target.value) 
+  
+  const handleSelect = (event) => {
+    setCommodity(event.target.text)
   }
 
   return (
     <div>
-      <Navbar bg='dark' variant='dark'>
+      <Navbar bg='dark' variant='dark' className='mb-3'>
         <Container>
-        <Navbar.Brand className='text-info'>COT Report</Navbar.Brand>
-        <Nav className='me-auto'>
-          <label className='text-warning mr-4'>
-            Select Commodity 
-          </label>
-          <select value={commodity} onChange={handleChange} className='ml-4'>
-            {data.data.map(future =>
-              <option className='me-auto' key={future.name} value={future.name}>{future.name}</option>)}
-          </select>
-        </Nav>
-        
-        </Container>
+          <Navbar.Brand className='text-info mr-auto'>COT Data</Navbar.Brand>
+          <Nav className='me-auto'>
+            <NavDropdown title={commodity}>
+              {data.data.map(future =>
+                <NavDropdown.Item key={future.name} onClick={handleSelect} value={future.name}>{future.name}</NavDropdown.Item>)}
+            </NavDropdown>
+          </Nav>
+          </Container>
       </Navbar>
       <h1>Commitment of Traders Data</h1>
         <div key={selectedCommodityData[0].name}>
