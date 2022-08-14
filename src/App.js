@@ -1,8 +1,9 @@
-import React from 'react'
-import { Line } from 'react-chartjs-2'
-import * as jsonData from './json_data.json'
-import { useState, useEffect } from 'react';
-import { Container, Dropdown, Navbar, NavDropdown, Nav } from 'react-bootstrap'
+import React from "react";
+import { Line } from "react-chartjs-2";
+import * as jsonData from "./json_data.json";
+import * as priceData from "./price_data.json";
+import { useState, useEffect } from "react";
+import { Container, Dropdown, Navbar, NavDropdown, Nav } from "react-bootstrap";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -12,7 +13,7 @@ import {
   Title,
   Tooltip,
   Legend,
-} from 'chart.js';
+} from "chart.js";
 
 ChartJS.register(
   CategoryScale,
@@ -24,93 +25,144 @@ ChartJS.register(
   Legend
 );
 
-const data = jsonData
+const data = jsonData;
+const futurePriceData = priceData;
 
 function App() {
-  const [commodity, setCommodity] = useState('E-MINI S&P 500 - CHICAGO MERCANTILE EXCHANGE')
-  const [selectedCommodityData, setSelectedCommodityData] = useState([data.data.filter(future => future.name === commodity)])
+  const [commodity, setCommodity] = useState(
+    "E-MINI S&P 500 - CHICAGO MERCANTILE EXCHANGE"
+  );
+  const [selectedCommodityData, setSelectedCommodityData] = useState([
+    data.data.filter((future) => future.name === commodity),
+  ]);
+
+  const [selectedFuturePriceData, setSelectedFuturePriceData] = useState([
+    futurePriceData.data.filter((future) => future.name === commodity),
+  ]);
 
   useEffect(() => {
-    setSelectedCommodityData(data.data.filter(future => future.name === commodity))
-  }, [commodity])
-  
+    setSelectedCommodityData(
+      data.data.filter((future) => future.name === commodity)
+    );
+    setSelectedFuturePriceData(
+      futurePriceData.data.filter((future) => future.name === commodity)
+    );
+  }, [commodity]);
+
   const handleSelect = (event) => {
-    setCommodity(event.target.text)
-  }
+    setCommodity(event.target.text);
+  };
 
   return (
     <div>
-      <Navbar bg='dark' variant='dark' className='mb-3'>
+      <Navbar bg="dark" variant="dark" className="mb-3">
         <Container>
-          <Navbar.Brand className='text-info mr-auto'>COT Data</Navbar.Brand>
-          <Nav className='me-auto'>
+          <Navbar.Brand className="text-info mr-auto">
+            CFTC COT Data
+          </Navbar.Brand>
+          <Nav className="me-auto">
             <NavDropdown title={commodity}>
-              {data.data.map(future =>
-                <NavDropdown.Item key={future.name} onClick={handleSelect} value={future.name}>{future.name}</NavDropdown.Item>)}
+              {data.data.map((future) => (
+                <NavDropdown.Item
+                  key={future.name}
+                  onClick={handleSelect}
+                  value={future.name}
+                >
+                  {future.name}
+                </NavDropdown.Item>
+              ))}
             </NavDropdown>
           </Nav>
-          </Container>
+        </Container>
       </Navbar>
       <h1>Commitment of Traders Data</h1>
-        <div key={selectedCommodityData[0].name}>
-          <Line options={
+      <div key={selectedCommodityData[0].name}>
+        <Line
+          options={{
+            responsive: true,
+            hover: { mode: "nearest", intersect: false },
+            layout: { padding: 80 },
+            plugins: {
+              title: {
+                display: true,
+                text: selectedCommodityData[0].name,
+              },
+              tooltip: {
+                mode: "index",
+                intersect: false,
+                position: "nearest",
+              },
+            },
+          }}
+          data={{
+            labels: selectedCommodityData[0].dates,
+            datasets: [
               {
-                responsive: true, 
-                hover: {mode: 'nearest', intersect: false}, 
-                layout: {padding: 80},
-                plugins:{
-                  title: {
-                    display: true,
-                    text: selectedCommodityData[0].name
-                  },
-                  tooltip: {
-                    mode: 'index', 
-                    intersect: false,
-                    position: 'nearest',
-                  },
-                }
-              }
-            } 
-            data={
+                label: "Commercial Hedgers",
+                data: selectedCommodityData[0].commercial,
+                borderColor: "green",
+                backgroundColor: "green",
+                borderJoinStyle: "round",
+                pointStyle: "line",
+                pointBorderWidth: 0,
+              },
               {
-                labels: selectedCommodityData[0].dates,
-                datasets: [
-                  {
-                    label: 'Commercial Hedgers',
-                    data: selectedCommodityData[0].commercial,
-                    borderColor: 'green',
-                    backgroundColor: 'green',
-                    borderJoinStyle: 'round',
-                    pointStyle: 'line',
-                    pointBorderWidth: 0,
-                    
-                  },
-                  {
-                    label: 'Small Traders',
-                    data: selectedCommodityData[0]['non reporting'],
-                    borderColor: 'blue',
-                    backgroundColor: 'blue',
-                    borderJoinStyle: 'round',
-                    pointStyle: 'line',
-                    pointBorderWidth: 0,
-                  },
-                  {
-                    label: 'Large Traders',
-                    data: selectedCommodityData[0]['non commercial'],
-                    borderColor: 'red',
-                    backgroundColor: 'red',
-                    borderJoinStyle: 'round',
-                    pointStyle: 'line',
-                    pointBorderWidth: 0
-                  },
-                ]
-              }
-            }/>
-        </div>
+                label: "Small Traders",
+                data: selectedCommodityData[0]["non reporting"],
+                borderColor: "blue",
+                backgroundColor: "blue",
+                borderJoinStyle: "round",
+                pointStyle: "line",
+                pointBorderWidth: 0,
+              },
+              {
+                label: "Large Traders",
+                data: selectedCommodityData[0]["non commercial"],
+                borderColor: "red",
+                backgroundColor: "red",
+                borderJoinStyle: "round",
+                pointStyle: "line",
+                pointBorderWidth: 0,
+              },
+            ],
+          }}
+        />
+        <Line
+          options={{
+            responsive: true,
+            hover: { mode: "nearest", intersect: false },
+            layout: { padding: 80 },
+            plugins: {
+              title: {
+                display: true,
+                text: selectedFuturePriceData[0].name,
+              },
+              tooltip: {
+                mode: "index",
+                intersect: false,
+                position: "nearest",
+              },
+            },
+          }}
+          data={{
+            labels: selectedFuturePriceData[0].dates,
+            datasets: [
+              {
+                label: "Closing Price Data",
+                data: selectedFuturePriceData[0].close,
+                borderColor: "blue",
+                backgroundColor: "blue",
+                borderJoinStyle: "round",
+                pointStyle: "line",
+                pointBorderWidth: 0,
+              },
+            ],
+          }}
+        />
+      </div>
     </div>
   );
 }
-
 
 export default App;
 
