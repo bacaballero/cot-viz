@@ -1,6 +1,11 @@
 h1 {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    text-align: center;
-    margin-bottom: -60px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  text-align: center;
+  margin-bottom: -60px;
 }
 
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

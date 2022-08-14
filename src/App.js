@@ -77,17 +77,19 @@ function App() {
         </Container>
       </Navbar>
       <h1>Commitment of Traders Data</h1>
-      <div key={selectedCommodityData[0].name}>
+      <div key={selectedCommodityData[0].name} class="center">
         <Line
+          height="500px"
+          width="1700px"
           options={{
-            maintainAspectRatio: true,
-            responsive: true,
+            maintainAspectRatio: false,
+            responsive: false,
             hover: { mode: "nearest", intersect: false },
             layout: {
               padding: {
-                left: 100,
+                left: 75,
                 right: 100,
-                top: 100,
+                top: 60,
               },
             },
             plugins: {
@@ -135,16 +137,20 @@ function App() {
             ],
           }}
         />
+      </div>
+      <div class="center">
         <Line
+          height="500px"
+          width="1700px"
           options={{
-            maintainAspectRatio: true,
-            responsive: true,
+            maintainAspectRatio: false,
+            responsive: false,
             hover: { mode: "nearest", intersect: false },
             layout: { padding: { left: 100, right: 100, bottom: 100 } },
             plugins: {
               title: {
                 display: true,
-                text: selectedFuturePriceData[0].name,
+                //text: selectedFuturePriceData[0].name,
               },
               tooltip: {
                 mode: "index",
@@ -157,7 +163,7 @@ function App() {
             labels: selectedFuturePriceData[0].dates,
             datasets: [
               {
-                label: "Closing Price Data",
+                label: "Closing Price - Weekly",
                 data: selectedFuturePriceData[0].close,
                 borderColor: "blue",
                 backgroundColor: "blue",
