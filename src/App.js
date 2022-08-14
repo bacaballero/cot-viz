@@ -57,31 +57,39 @@ function App() {
     <div>
       <Navbar bg="dark" variant="dark" className="mb-3">
         <Container>
-          <Navbar.Brand className="text-info mr-auto">
-            CFTC COT Data
-          </Navbar.Brand>
-          <Nav className="me-auto">
-            <NavDropdown title={commodity}>
-              {data.data.map((future) => (
-                <NavDropdown.Item
-                  key={future.name}
-                  onClick={handleSelect}
-                  value={future.name}
-                >
-                  {future.name}
-                </NavDropdown.Item>
-              ))}
-            </NavDropdown>
-          </Nav>
+          <Navbar.Brand className="text-info">CFTC COT Data</Navbar.Brand>
+        </Container>
+        <Nav className="me-auto">
+          <NavDropdown title={commodity}>
+            {data.data.map((future) => (
+              <NavDropdown.Item
+                key={future.name}
+                onClick={handleSelect}
+                value={future.name}
+              >
+                {future.name}
+              </NavDropdown.Item>
+            ))}
+          </NavDropdown>
+        </Nav>
+        <Container>
+          <Navbar.Brand className="text-info ms-auto"></Navbar.Brand>
         </Container>
       </Navbar>
       <h1>Commitment of Traders Data</h1>
       <div key={selectedCommodityData[0].name}>
         <Line
           options={{
+            maintainAspectRatio: true,
             responsive: true,
             hover: { mode: "nearest", intersect: false },
-            layout: { padding: 80 },
+            layout: {
+              padding: {
+                left: 100,
+                right: 100,
+                top: 100,
+              },
+            },
             plugins: {
               title: {
                 display: true,
@@ -129,9 +137,10 @@ function App() {
         />
         <Line
           options={{
+            maintainAspectRatio: true,
             responsive: true,
             hover: { mode: "nearest", intersect: false },
-            layout: { padding: 80 },
+            layout: { padding: { left: 100, right: 100, bottom: 100 } },
             plugins: {
               title: {
                 display: true,
